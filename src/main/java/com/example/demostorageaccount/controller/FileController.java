@@ -49,7 +49,7 @@ public class FileController {
         // Create a BlobServiceClient object which will be used to create a container client
 
         try {
-            String result = fileDynamicConnectionService.attachmentEncodedSimple(pathAttachment, containerName, blobName);
+            String result = fileDynamicConnectionService.getAttachmentEncoded(pathAttachment, containerName, blobName);
             return ResponseEntity.status(HttpStatus.OK).body(result);
         } catch (Exception e) {
             return ResponseEntity.ok(e);
@@ -58,21 +58,21 @@ public class FileController {
 
     @PostMapping(value = "/dynamicBatch")
     public ResponseEntity<?> downloadDynamicBatch(@RequestBody FileRequest fileRequest) {
-        List<String> result = fileDynamicConnectionService.attachmentEncodedMultiple(fileRequest.getConnectionString(), fileRequest.getContainerName(), fileRequest.getBlobNames());
+        List<String> result = fileDynamicConnectionService.getAttachmentsUsingBlobServiceClient(fileRequest.getConnectionString(), fileRequest.getContainerName(), fileRequest.getBlobNames());
         return ResponseEntity.status(HttpStatus.OK).body(result);
 
     }
 
     @PostMapping(value = "/dynamicBatchV2")
     public ResponseEntity<?> downloadDynamicBatchV2(@RequestBody FileRequest fileRequest) {
-        List<String> result = fileDynamicConnectionService.attachmentEncodedMultiplev2(fileRequest.getConnectionString(), fileRequest.getContainerName(), fileRequest.getBlobNames());
+        List<String> result = fileDynamicConnectionService.getAttachmentsUsingBlobClientBuilder(fileRequest.getConnectionString(), fileRequest.getContainerName(), fileRequest.getBlobNames());
         return ResponseEntity.status(HttpStatus.OK).body(result);
 
     }
 
     @PostMapping(value = "/dynamicBatchV3")
     public ResponseEntity<?> downloadDynamicBatchV3(@RequestBody FileRequest fileRequest) {
-        List<String> result = fileDynamicConnectionService.attachmentEncodedMultiplev3(fileRequest.getConnectionString(), fileRequest.getContainerName(), fileRequest.getBlobNames());
+        List<String> result = fileDynamicConnectionService.getAttachmentsUsingBlobClientBuilderWithParallelStream(fileRequest.getConnectionString(), fileRequest.getContainerName(), fileRequest.getBlobNames());
         return ResponseEntity.status(HttpStatus.OK).body(result);
 
     }
@@ -80,14 +80,14 @@ public class FileController {
 
     @PostMapping(value = "/dynamicBatchV4")
     public ResponseEntity<?> downloadDynamicBatchV4(@RequestBody FileRequestMultiple fileRequestv2) {
-        List<String> result = fileDynamicConnectionService.attachmentEncodedSimpleWithClientCredentialsBlobServiceClient(fileRequestv2);
+        List<String> result = fileDynamicConnectionService.getAttachmentUsingServicePrincipalAndBlobServiceClientBuilder(fileRequestv2);
         return ResponseEntity.status(HttpStatus.OK).body(result);
 
     }
 
     @PostMapping(value = "/dynamicBatchV5")
     public ResponseEntity<?> downloadDynamicBatchV5(@RequestBody FileRequestMultiple fileRequestv2) {
-        List<String> result = fileDynamicConnectionService.attachmentEncodedSimpleWithClientCredentialsBlobClientBuilder(fileRequestv2);
+        List<String> result = fileDynamicConnectionService.getAttachmentUsingServicePrincipalAndBlobClientBuilder(fileRequestv2);
         return ResponseEntity.status(HttpStatus.OK).body(result);
 
     }

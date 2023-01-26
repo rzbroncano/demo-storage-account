@@ -18,13 +18,13 @@ import java.util.stream.Collectors;
 @Service
 public class FileDynamicConnectionService {
 
-    public String attachmentEncodedSimple(String connectionString, String containerName, String blobName) {
+    public String getAttachmentEncoded(String connectionString, String containerName, String blobName) {
+
+        log.info("attachmentEncodedSimple method");
 
         BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().connectionString(connectionString).buildClient();
         BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(containerName);
-
         BlobClient blobClient = containerClient.getBlobClient(blobName);
-
         BinaryData result = blobClient.downloadContent();
         String imageEncoded = Base64.getEncoder().encodeToString(result.toBytes());
 
@@ -32,8 +32,9 @@ public class FileDynamicConnectionService {
     }
 
 
-    public List<String> attachmentEncodedMultiple(String connectionString, String containerName, List<String> blobNames) {
+    public List<String> getAttachmentsUsingBlobServiceClient(String connectionString, String containerName, List<String> blobNames) {
 
+        log.info("attachmentEncodedMultiple method");
 
         BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().connectionString(connectionString).buildClient();
         BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(containerName);
@@ -44,7 +45,9 @@ public class FileDynamicConnectionService {
                 .collect(Collectors.toList());
     }
 
-    public List<String> attachmentEncodedMultiplev2(String connectionString, String containerName, List<String> blobNames) {
+    public List<String> getAttachmentsUsingBlobClientBuilder(String connectionString, String containerName, List<String> blobNames) {
+
+        log.info("attachmentEncodedMultiplev2 method");
 
         return blobNames.stream()
                 .map(blobName -> new BlobClientBuilder()
@@ -55,7 +58,7 @@ public class FileDynamicConnectionService {
                 .collect(Collectors.toList());
     }
 
-    public List<String> attachmentEncodedMultiplev3(String connectionString, String containerName, List<String> blobNames) {
+    public List<String> getAttachmentsUsingBlobClientBuilderWithParallelStream(String connectionString, String containerName, List<String> blobNames) {
 
         return blobNames.parallelStream()
                 .map(blobName -> new BlobClientBuilder()
@@ -66,7 +69,7 @@ public class FileDynamicConnectionService {
                 .collect(Collectors.toList());
     }
 
-    public List<String> attachmentEncodedSimpleWithClientCredentialsBlobServiceClient(FileRequestMultiple fileRequestv2) {
+    public List<String> getAttachmentUsingServicePrincipalAndBlobServiceClientBuilder(FileRequestMultiple fileRequestv2) {
         log.info("attachmentEncodedSimpleWithClientCredentialsBlobServiceClient");
         return fileRequestv2.getBlobNames().parallelStream()
                 .map(blobName -> new BlobServiceClientBuilder()
@@ -79,7 +82,7 @@ public class FileDynamicConnectionService {
                 .collect(Collectors.toList());
     }
 
-    public List<String> attachmentEncodedSimpleWithClientCredentialsBlobClientBuilder(FileRequestMultiple fileRequestv2) {
+    public List<String> getAttachmentUsingServicePrincipalAndBlobClientBuilder(FileRequestMultiple fileRequestv2) {
         log.info("attachmentEncodedSimpleWithClientCredentialsBlobClientBuilder");
         return fileRequestv2.getBlobNames().parallelStream()
                 .map(blobName -> new BlobClientBuilder()
@@ -118,10 +121,6 @@ public class FileDynamicConnectionService {
                 .clientId(clientId)
                 .tenantId(tenantId)
                 .build();
-    }
-
-    public String getStorageEndpoint(String storageEndpoint, String storageId) {
-        return storageEndpoint.replace("{STORAGE-ID}", storageId);
     }
 
 }
