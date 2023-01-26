@@ -60,9 +60,7 @@ Por favor lee el [CONTRIBUTING.md](https://gist.github.com/villanuevand/xxxxxx) 
 
 _Menciona a todos aquellos que ayudaron a levantar el proyecto desde sus inicios_
 
-* **Renzo Broncano** - *Trabajo Inicial* - [villanuevand](https://github.com/rzbroncano)
-
-También puedes mirar la lista de todos los [contribuyentes](https://github.com/your/project/contributors) quíenes han participado en este proyecto. 
+* **Renzo Broncano** - *Trabajo Inicial* - [rzbroncano](https://github.com/rzbroncano)
 
 
 ---
